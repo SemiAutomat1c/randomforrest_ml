@@ -37,6 +37,43 @@ def predict():
         print("❌ Prediction error:", e)
         return jsonify({"error": str(e)}), 500
 
+@app.route("/predict-batch", methods=["POST"])
+def predict_batch():
+    try:
+        if model is None or vectorizer is None:
+            return jsonify({"error": "Model not loaded"}), 500
+
+        data = request.get_json()
+        messages = data.get("messages", [])
+
+        if not messages or len(messages) == 0:
+            return jsonify({"error": "No messages provided"}), 400
+
+        # Filter out empty messages
+        messages = [msg.strip() for msg in messages if msg.strip()]
+        
+        if len(messages) == 0:
+            return jsonify({"error": "All messages are empty"}), 400
+
+        # Vectorize all messages at once (more efficient)
+        messages_vec = vectorizer.transform(messages)
+
+        # Predict all at once
+        predictions = model.predict(messages_vec)
+        
+        # Convert predictions to labels
+        results = []
+        for i, pred in enumerate(predictions):
+            results.append({
+                "message": messages[i],
+                "prediction": "Spam" if pred == 1 else "Not Spam"
+            })
+
+        return jsonify({"results": results})
+    except Exception as e:
+        print("❌ Batch prediction error:", e)
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

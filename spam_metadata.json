@@ -5,8 +5,8 @@
         "spam": 4825
     },
     "evaluation_metrics": {
-        "accuracy": 1.0,
+        "accuracy": 0.9994818652849741,
         "precision": 1.0,
-        "recall": 1.0
+        "recall": 0.9989637305699481
     }
 }
