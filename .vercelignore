@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv
+.git/
+.gitignore
+*.log
+.DS_Store
+*.pkl
+spam_metadata.json
+model_metadata.json
+*.csv

@@ -1,14 +1,33 @@
 from flask import Flask, render_template, request, jsonify
 import joblib
+import os
 
 app = Flask(__name__)
-try:
-    model = joblib.load("spam_model.pkl")
-    vectorizer = joblib.load("vectorizer.pkl")
-    print("✅ Model and vectorizer loaded successfully.")
-except Exception as e:
-    print("❌ Error loading model or vectorizer:", e)
-    model, vectorizer = None, None
+
+# Load model and vectorizer
+model = None
+vectorizer = None
+
+def load_model():
+    global model, vectorizer
+    if model is None or vectorizer is None:
+        try:
+            # Try loading from current directory
+            model_path = "spam_model.pkl"
+            vectorizer_path = "vectorizer.pkl"
+            
+            # Check if files exist
+            if os.path.exists(model_path) and os.path.exists(vectorizer_path):
+                model = joblib.load(model_path)
+                vectorizer = joblib.load(vectorizer_path)
+                print("✅ Model and vectorizer loaded successfully.")
+            else:
+                print("❌ Model files not found")
+        except Exception as e:
+            print("❌ Error loading model or vectorizer:", e)
+
+# Try to load on startup
+load_model()
 
 
 @app.route("/")
