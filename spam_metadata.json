@@ -1,0 +1,12 @@
+{
+    "vectorizer_features": 10000,
+    "class_distribution": {
+        "ham": 4825,
+        "spam": 4825
+    },
+    "evaluation_metrics": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0
+    }
+}
